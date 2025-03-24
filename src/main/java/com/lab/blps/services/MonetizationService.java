@@ -7,7 +7,6 @@ import com.lab.blps.repositories.PaymentInfoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 
 @Service
 public class MonetizationService {
@@ -32,11 +31,22 @@ public class MonetizationService {
         Application application = checkDeveloperAccess(applicationId, developerId);
 
         // Создать/обновить платежные реквизиты
-        PaymentInfo paymentInfo = new PaymentInfo();
-        paymentInfo.setAccountNumber(accountNumber);
-        paymentInfo.setDeveloper(application.getDeveloper());
-        paymentInfo.setPaymentStatus(PaymentStatus.NONE); // пока не проверено Finance Dept
-        paymentInfoRepository.save(paymentInfo);
+
+        /*
+         Я вот думаю над тем, что если уже есть у нас PaymentInfo для девелопера,
+         тогда нам не надо создавать, так что добавил проверку
+         */
+        if(paymentInfoRepository.getPaymentInfoByAccountNumber(accountNumber) != null) {
+            var paymentInfo = paymentInfoRepository.getPaymentInfoByAccountNumber(accountNumber);
+            paymentInfo.setPaymentStatus(PaymentStatus.APPROVED);
+        }
+        else {
+            PaymentInfo paymentInfo = new PaymentInfo();
+            paymentInfo.setAccountNumber(accountNumber);
+            paymentInfo.setDeveloper(application.getDeveloper());
+            paymentInfo.setPaymentStatus(PaymentStatus.NONE); // пока не проверено Finance Dept
+            paymentInfoRepository.save(paymentInfo);
+        }
 
         application.setMonetizationStatus(MonetizationStatus.REQUESTED);
         applicationRepository.save(application);
@@ -78,6 +88,14 @@ public class MonetizationService {
         return contract;
     }
 
+    /**
+     * Developer Получает детали контракта для ознакомления
+     */
+    public String getContractInfo(Long contrartId){
+        Contract contract = contractRepository.findById(contrartId)
+                .orElseThrow(() -> new RuntimeException("Contract not found"));
+        return contract.getPdfPath();
+    }
     /**
      * Developer соглашается/отказывается от договора
      */

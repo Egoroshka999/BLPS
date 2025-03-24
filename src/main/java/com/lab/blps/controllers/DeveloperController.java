@@ -1,5 +1,6 @@
 package com.lab.blps.controllers;
 
+import com.lab.blps.dtos.ApplicationDto;
 import com.lab.blps.models.Application;
 import com.lab.blps.services.ApplicationService;
 import com.lab.blps.services.MonetizationService;
@@ -31,20 +32,14 @@ public class DeveloperController {
 
     // Загрузить новое приложение
     @PostMapping("/applications")
-    public Application uploadApplication(@RequestParam Long developerId,
-                                         @RequestParam String name,
-                                         @RequestParam String description,
-                                         @RequestParam String filePath) {
-        return applicationService.uploadApplication(developerId, name, description, filePath);
+    public Application uploadApplication(@RequestParam ApplicationDto applicationDto, @RequestParam Long developerId) {
+        return applicationService.uploadApplication(applicationDto, developerId);
     }
 
     // Обновить приложение
     @PutMapping("/applications/{appId}")
-    public Application updateApplication(@PathVariable Long appId,
-                                         @RequestParam Long developerId,
-                                         @RequestParam String newName,
-                                         @RequestParam String newDescription) {
-        return applicationService.updateApplication(appId, developerId, newName, newDescription);
+    public Application updateApplication(@PathVariable Long appId, @PathVariable ApplicationDto applicationDto, @RequestParam Long developerId) {
+        return applicationService.updateApplication(appId, applicationDto, developerId);
     }
 
     // Удалить приложение
@@ -69,6 +64,11 @@ public class DeveloperController {
         return monetizationService.stopMonetization(appId, developerId);
     }
 
+    //Получение контракта на изучение
+    @GetMapping("/contracts/{contractId}")
+    public String getContract(@PathVariable Long contractId) {
+        return monetizationService.getContractInfo(contractId);
+    }
     // Ответ на договор
     @PostMapping("/contracts/{contractId}/response")
     public String contractResponse(@PathVariable Long contractId,

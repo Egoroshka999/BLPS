@@ -1,5 +1,6 @@
 package com.lab.blps.services;
 
+import com.lab.blps.dtos.ApplicationDto;
 import com.lab.blps.models.Application;
 import com.lab.blps.models.ApplicationStatus;
 import com.lab.blps.models.MonetizationStatus;
@@ -25,14 +26,14 @@ public class ApplicationService {
     }
 
     @Transactional
-    public Application uploadApplication(Long developerId, String name, String description, String filePath) {
+    public Application uploadApplication(ApplicationDto applicationDto, Long developerId) {
         User developer = userRepository.findById(developerId)
                 .orElseThrow(() -> new RuntimeException("Developer not found"));
 
         Application application = new Application();
-        application.setName(name);
-        application.setDescription(description);
-        application.setAppFilePath(filePath);
+        application.setName(applicationDto.getName());
+        application.setDescription(applicationDto.getDescription());
+        application.setAppFilePath(applicationDto.getAppFilePath());
         application.setDeveloper(developer);
         application.setStatus(ApplicationStatus.UPLOADED);
         application.setMonetizationStatus(MonetizationStatus.NONE);
@@ -53,8 +54,7 @@ public class ApplicationService {
     }
 
     @Transactional
-    public Application updateApplication(Long applicationId, Long developerId,
-                                         String newName, String newDescription) {
+    public Application updateApplication(Long applicationId, ApplicationDto applicationDto, Long developerId) {
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new RuntimeException("Application not found"));
 
@@ -62,8 +62,10 @@ public class ApplicationService {
             throw new RuntimeException("Access denied");
         }
 
-        application.setName(newName);
-        application.setDescription(newDescription);
+        application.setName(applicationDto.getName());
+        application.setDescription(applicationDto.getDescription());
+        application.setAppFilePath(applicationDto.getAppFilePath());
+        application.setStatus(ApplicationStatus.UPLOADED);
         return applicationRepository.save(application);
     }
 
@@ -75,4 +77,7 @@ public class ApplicationService {
 
 
     // и т.д. методы для получения списка приложений, подробной инфы и т.п.
+    /*
+      Здесь вроде все есть хз что еще добавить, не совсем понял про подробную инфу
+     */
 }
