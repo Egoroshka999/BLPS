@@ -32,7 +32,7 @@ public class DeveloperController {
 
     // Загрузить новое приложение
     @PostMapping("/applications")
-    public Application uploadApplication(@RequestParam ApplicationDto applicationDto, @RequestParam Long developerId) {
+    public Application uploadApplication(@RequestBody ApplicationDto applicationDto, @RequestParam Long developerId) {
         return applicationService.uploadApplication(applicationDto, developerId);
     }
 
