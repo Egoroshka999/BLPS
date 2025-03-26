@@ -1,5 +1,6 @@
 package com.lab.blps.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,8 @@ public class User {
     private Long id;
 
     private String username;
+
+    @JsonIgnore
     private String password;
 
     @Enumerated(EnumType.STRING)
