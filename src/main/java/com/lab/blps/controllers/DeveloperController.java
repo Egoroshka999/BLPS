@@ -38,7 +38,7 @@ public class DeveloperController {
 
     // Обновить приложение
     @PutMapping("/applications/{appId}")
-    public Application updateApplication(@PathVariable Long appId, @PathVariable ApplicationDto applicationDto, @RequestParam Long developerId) {
+    public Application updateApplication(@PathVariable Long appId, @RequestBody ApplicationDto applicationDto, @RequestParam Long developerId) {
         return applicationService.updateApplication(appId, applicationDto, developerId);
     }
 
