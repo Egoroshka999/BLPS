@@ -6,6 +6,9 @@ import com.lab.blps.services.ApplicationService;
 import com.lab.blps.services.MonetizationService;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 @RestController
@@ -23,11 +26,11 @@ public class DeveloperController {
 
     // Получить список приложений текущего разработчика
     @GetMapping("/applications")
-    public List<Application> getMyApplications(@RequestParam Long developerId) {
+    public Page<Application> getMyApplications(@RequestParam Long developerId, Pageable pageable) {
         // На будущее developerId брать из токена аутентификации
         // и фильтровать приложения по developerId.
         // Здесь упрощённый вариант.
-        return applicationService.getAllByDeveloper(developerId);
+        return applicationService.getAllByDeveloper(developerId, pageable);
     }
 
     // Загрузить новое приложение

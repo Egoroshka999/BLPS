@@ -7,6 +7,8 @@ import com.lab.blps.models.MonetizationStatus;
 import com.lab.blps.models.User;
 import com.lab.blps.repositories.ApplicationRepository;
 import com.lab.blps.repositories.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -69,10 +71,8 @@ public class ApplicationService {
         return applicationRepository.save(application);
     }
 
-    public List<Application> getAllByDeveloper(Long developerId) {
-        return applicationRepository.findAll().stream()
-                .filter(app -> app.getDeveloper().getId().equals(developerId))
-                .collect(Collectors.toList());
+    public Page<Application> getAllByDeveloper(Long developerId, Pageable pageable) {
+        return applicationRepository.findByDeveloperId(developerId, pageable);
     }
 
 
