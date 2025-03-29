@@ -11,7 +11,7 @@ Content-Type: application/json
 ###
 
 # 2️⃣ Получаем список приложений разработчика
-GET http://localhost:8080/api/developer/applications?developerId=1
+GET http://localhost:8080/api/developer/applications?developerId=1&page=0&size=10
 
 ###
 
@@ -49,7 +49,7 @@ POST http://localhost:8080/api/finance/contracts?applicationId=1&pdfPath=/path/t
 
 # 9️⃣ Разработчик подписывает договор (или отказывается)
 # Если разработчик отказывается, пропустите следующий шаг
-GET http://localhost:8080/api/developer/contracts/1
+GET http://localhost:8080/api/developer/contracts/1&page=0&size=10
 
 ###
 # ыыы
