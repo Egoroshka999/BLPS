@@ -1,19 +1,17 @@
 package com.lab.blps.services;
 
 import com.lab.blps.dtos.ApplicationDto;
-import com.lab.blps.models.Application;
-import com.lab.blps.models.ApplicationStatus;
-import com.lab.blps.models.MonetizationStatus;
-import com.lab.blps.models.User;
-import com.lab.blps.repositories.ApplicationRepository;
-import com.lab.blps.repositories.UserRepository;
+import com.lab.blps.models.applications.Application;
+import com.lab.blps.models.applications.ApplicationStatus;
+import com.lab.blps.models.applications.MonetizationStatus;
+import com.lab.blps.models.applications.User;
+import com.lab.blps.repositories.applications.ApplicationRepository;
+import com.lab.blps.repositories.applications.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 @Service
 public class ApplicationService {
@@ -29,6 +27,7 @@ public class ApplicationService {
 
     @Transactional
     public Application uploadApplication(ApplicationDto applicationDto, Long developerId) {
+        System.out.println("TRANSACTION ACTIVE: " + TransactionSynchronizationManager.isActualTransactionActive());
         User developer = userRepository.findById(developerId)
                 .orElseThrow(() -> new RuntimeException("Developer not found"));
 
@@ -40,7 +39,13 @@ public class ApplicationService {
         application.setStatus(ApplicationStatus.UPLOADED);
         application.setMonetizationStatus(MonetizationStatus.NONE);
 
-        return applicationRepository.save(application);
+        System.out.println("Service LEVEL -----------");
+        System.out.println(application);
+        Application saved = applicationRepository.save(application);
+        System.out.println("Repository LEVEL -----------");
+        System.out.println(saved);
+        applicationRepository.flush();
+        return saved;
     }
 
     @Transactional

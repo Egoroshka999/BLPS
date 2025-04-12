@@ -1,6 +1,6 @@
 package com.lab.blps.controllers;
 
-import com.lab.blps.models.Application;
+import com.lab.blps.models.applications.Application;
 import com.lab.blps.services.ModerationService;
 import org.springframework.web.bind.annotation.*;
 

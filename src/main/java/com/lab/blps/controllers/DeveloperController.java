@@ -1,15 +1,13 @@
 package com.lab.blps.controllers;
 
 import com.lab.blps.dtos.ApplicationDto;
-import com.lab.blps.models.Application;
+import com.lab.blps.models.applications.Application;
 import com.lab.blps.services.ApplicationService;
 import com.lab.blps.services.MonetizationService;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/developer")

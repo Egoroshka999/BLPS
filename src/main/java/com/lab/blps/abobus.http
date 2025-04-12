@@ -1,5 +1,5 @@
 # 1 Разработчик загружает приложение
-POST http://localhost:8080/api/developer/applications?developerId=1
+POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/applications?developerId=1
 Content-Type: application/json
 
 {
@@ -11,7 +11,7 @@ Content-Type: application/json
 ###
 
 # 2 Получаем список приложений разработчика
-GET http://localhost:8080/api/developer/applications?developerId=1&page=0&size=10
+GET http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/applications?developerId=1&page=0&size=10
 
 ###
 

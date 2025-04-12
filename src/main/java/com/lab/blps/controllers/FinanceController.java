@@ -1,8 +1,8 @@
 package com.lab.blps.controllers;
 
-import com.lab.blps.models.Contract;
-import com.lab.blps.models.PaymentInfo;
-import com.lab.blps.models.PaymentStatus;
+import com.lab.blps.models.contracts.Contract;
+import com.lab.blps.models.applications.PaymentInfo;
+import com.lab.blps.models.applications.PaymentStatus;
 import com.lab.blps.services.MonetizationService;
 import org.springframework.web.bind.annotation.*;
 

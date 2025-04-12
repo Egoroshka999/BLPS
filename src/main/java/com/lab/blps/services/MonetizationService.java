@@ -1,9 +1,14 @@
 package com.lab.blps.services;
 
-import com.lab.blps.models.*;
-import com.lab.blps.repositories.ApplicationRepository;
-import com.lab.blps.repositories.ContractRepository;
-import com.lab.blps.repositories.PaymentInfoRepository;
+import com.lab.blps.models.applications.Application;
+import com.lab.blps.models.applications.MonetizationStatus;
+import com.lab.blps.models.applications.PaymentInfo;
+import com.lab.blps.models.applications.PaymentStatus;
+import com.lab.blps.models.contracts.Contract;
+import com.lab.blps.models.contracts.ContractStatus;
+import com.lab.blps.repositories.applications.ApplicationRepository;
+import com.lab.blps.repositories.contracts.ContractRepository;
+import com.lab.blps.repositories.applications.PaymentInfoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,7 +81,7 @@ public class MonetizationService {
 
         // Предполагаем, что реквизиты уже проверены (paymentStatus = APPROVED).
         Contract contract = new Contract();
-        contract.setApplication(application);
+        contract.setApplicationId(applicationId);
         contract.setPdfPath(pdfPath);
         contract.setStatus(ContractStatus.SENT_TO_DEVELOPER);
 
@@ -104,7 +109,8 @@ public class MonetizationService {
         Contract contract = contractRepository.findById(contractId)
                 .orElseThrow(() -> new RuntimeException("Contract not found"));
 
-        Application application = contract.getApplication();
+        Long applicationId = contract.getApplicationId();
+        Application application = applicationRepository.getApplicationById(applicationId);
         if (!application.getDeveloper().getId().equals(developerId)) {
             throw new RuntimeException("Access denied");
         }
