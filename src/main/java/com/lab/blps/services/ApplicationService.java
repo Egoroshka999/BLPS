@@ -7,6 +7,8 @@ import com.lab.blps.models.applications.MonetizationStatus;
 import com.lab.blps.models.applications.User;
 import com.lab.blps.repositories.applications.ApplicationRepository;
 import com.lab.blps.repositories.applications.UserRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,10 @@ public class ApplicationService {
 
     private final ApplicationRepository applicationRepository;
     private final UserRepository userRepository;
+
+    // Первый EntityManager
+//    @PersistenceContext(unitName = "PrimaryPU")
+//    private EntityManager emPrimary;
 
     public ApplicationService(ApplicationRepository applicationRepository,
                               UserRepository userRepository) {
@@ -39,13 +45,8 @@ public class ApplicationService {
         application.setStatus(ApplicationStatus.UPLOADED);
         application.setMonetizationStatus(MonetizationStatus.NONE);
 
-        System.out.println("Service LEVEL -----------");
-        System.out.println(application);
-        Application saved = applicationRepository.save(application);
-        System.out.println("Repository LEVEL -----------");
-        System.out.println(saved);
-        applicationRepository.flush();
-        return saved;
+        applicationRepository.save(application);
+        return application;
     }
 
     @Transactional

@@ -27,7 +27,7 @@ public class PrimaryDbConfig {
     public DataSource primaryDataSource() throws NamingException {
         // Пример JNDI
         JndiObjectFactoryBean bean = new JndiObjectFactoryBean();
-        bean.setJndiName("java:/jboss/datasources/google_play_db");
+        bean.setJndiName("java:jboss/datasources/google_play_db");
         bean.afterPropertiesSet();
         System.out.println("LOOK HERE: DataSource primary loaded: " + bean.getObject());
         return (DataSource) bean.getObject();
@@ -39,7 +39,7 @@ public class PrimaryDbConfig {
     ) {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 
-        em.setDataSource(dataSource);
+        em.setJtaDataSource(dataSource);
         em.setPackagesToScan("com.lab.blps.models.applications"); // где лежат @Entity
         em.setPersistenceUnitName("PrimaryPU");
 
@@ -49,9 +49,7 @@ public class PrimaryDbConfig {
 
         Map<String, Object> props = new HashMap<>();
         // Указываем JTA-платформу WildFly, чтобы Hibernate знал про контейнерную транзакцию
-//        props.put("hibernate.transaction.coordinator_class", "jta");
-//        props.put("javax.persistence.transactionType", "JTA");
-        props.put("hibernate.transaction.jta.platform", "org.jboss.as.jpa.hibernate5.JBossAppServerJtaPlatform");
+//        props.put("hibernate.transaction.jta.platform", "org.jboss.as.jpa.hibernate5.JBossAppServerJtaPlatform");
         props.put("hibernate.hbm2ddl.auto", "update");
         em.setJpaPropertyMap(props);
 

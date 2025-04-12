@@ -24,7 +24,7 @@ public class ContractsDbConfig {
     @Bean
     public DataSource contractsDataSource() throws NamingException {
         JndiObjectFactoryBean bean = new JndiObjectFactoryBean();
-        bean.setJndiName("java:/jboss/datasources/contracts_db");
+        bean.setJndiName("java:jboss/datasources/contracts_db");
         bean.afterPropertiesSet();
         System.out.println("LOOK HERE: DataSource contracts loaded: " + bean.getObject());
         return (DataSource) bean.getObject();
@@ -35,7 +35,7 @@ public class ContractsDbConfig {
             @Qualifier("contractsDataSource") DataSource dataSource
     ) {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(dataSource);
+        em.setJtaDataSource(dataSource);
         em.setPackagesToScan("com.lab.blps.models.contracts");
         em.setPersistenceUnitName("ContractsPU");
 
@@ -45,7 +45,7 @@ public class ContractsDbConfig {
         Map<String, Object> props = new HashMap<>();
 //        props.put("hibernate.transaction.coordinator_class", "jta");
 //        props.put("javax.persistence.transactionType", "JTA");
-        props.put("hibernate.transaction.jta.platform", "org.jboss.as.jpa.hibernate5.JBossAppServerJtaPlatform");
+//        props.put("hibernate.transaction.jta.platform", "org.jboss.as.jpa.hibernate5.JBossAppServerJtaPlatform");
         props.put("hibernate.hbm2ddl.auto", "update");
         em.setJpaPropertyMap(props);
 
