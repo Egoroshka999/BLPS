@@ -47,11 +47,11 @@ POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/finance/contracts?appli
 ###
 
 # 9 Разработчик получает контракт
-GET http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/contracts/5
+GET http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/contracts/1
 
 ###
 # 10 Разработчик подписывает договор (или отказывается)
-POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/contracts/5/response?developerId=1&accepted=true
+POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/contracts/1/response?developerId=1&accepted=true
 
 ###
 

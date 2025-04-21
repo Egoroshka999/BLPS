@@ -26,7 +26,7 @@ public class FinanceController {
     // Создать договор (после проверки реквизитов)
     @PostMapping("/contracts")
     public Contract createContract(@RequestParam Long applicationId,
-                                   @RequestParam String pdfPath) {
+                                   @RequestParam String pdfPath) throws Exception {
         return monetizationService.createContractForApplication(applicationId, pdfPath);
     }
 }

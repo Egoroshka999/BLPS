@@ -75,7 +75,7 @@ public class MonetizationService {
      * Если реквизиты корректны, создаём договор и выставляем приложение в статус PENDING_CONTRACT.
      */
     @Transactional
-    public Contract createContractForApplication(Long applicationId, String pdfPath) {
+    public Contract createContractForApplication(Long applicationId, String pdfPath) throws Exception {
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new RuntimeException("Application not found"));
 
@@ -86,6 +86,10 @@ public class MonetizationService {
         contract.setStatus(ContractStatus.SENT_TO_DEVELOPER);
 
         contractRepository.save(contract);
+
+        if (application.getName().equals("Dota2")) {
+            throw new IllegalStateException("Dota2 govno");
+        }
 
         application.setMonetizationStatus(MonetizationStatus.PENDING_CONTRACT);
         applicationRepository.save(application);

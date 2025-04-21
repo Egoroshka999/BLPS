@@ -7,8 +7,6 @@ import com.lab.blps.models.applications.MonetizationStatus;
 import com.lab.blps.models.applications.User;
 import com.lab.blps.repositories.applications.ApplicationRepository;
 import com.lab.blps.repositories.applications.UserRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,10 +18,6 @@ public class ApplicationService {
 
     private final ApplicationRepository applicationRepository;
     private final UserRepository userRepository;
-
-    // Первый EntityManager
-//    @PersistenceContext(unitName = "PrimaryPU")
-//    private EntityManager emPrimary;
 
     public ApplicationService(ApplicationRepository applicationRepository,
                               UserRepository userRepository) {
@@ -80,10 +74,4 @@ public class ApplicationService {
     public Page<Application> getAllByDeveloper(Long developerId, Pageable pageable) {
         return applicationRepository.findByDeveloperId(developerId, pageable);
     }
-
-
-    // и т.д. методы для получения списка приложений, подробной инфы и т.п.
-    /*
-      Здесь вроде все есть хз что еще добавить, не совсем понял про подробную инфу
-     */
 }
