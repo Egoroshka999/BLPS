@@ -117,7 +117,7 @@ public class MonetizationService {
 
         Long applicationId = contract.getApplicationId();
         Application application = applicationRepository.getApplicationById(applicationId);
-        if (!application.getDeveloper().getId().equals(userService.getCurrentUser())) {
+        if (!application.getDeveloper().equals(userService.getCurrentUser())) {
             throw new RuntimeException("Access denied");
         }
 
