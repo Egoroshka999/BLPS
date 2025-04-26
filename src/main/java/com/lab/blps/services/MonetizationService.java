@@ -77,17 +77,21 @@ public class MonetizationService {
      * Если реквизиты корректны, создаём договор и выставляем приложение в статус PENDING_CONTRACT.
      */
     @Transactional
-    public Contract createContractForApplication(Long applicationId, String pdfPath) {
+    public Contract createContractForApplication(Long applicationId, String pdfPath) throws Exception {
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new RuntimeException("Application not found"));
 
         // Предполагаем, что реквизиты уже проверены (paymentStatus = APPROVED).
         Contract contract = new Contract();
-        contract.setApplication(application);
+        contract.setApplicationId(applicationId);
         contract.setPdfPath(pdfPath);
         contract.setStatus(ContractStatus.SENT_TO_DEVELOPER);
 
         contractRepository.save(contract);
+
+        if (application.getName().equals("Dota2")) {
+            throw new IllegalStateException("Dota2 govno");
+        }
 
         application.setMonetizationStatus(MonetizationStatus.PENDING_CONTRACT);
         applicationRepository.save(application);
@@ -111,8 +115,9 @@ public class MonetizationService {
         Contract contract = contractRepository.findById(contractId)
                 .orElseThrow(() -> new RuntimeException("Contract not found"));
 
-        Application application = contract.getApplication();
-        if (!application.getDeveloper().equals(userService.getCurrentUser())) {
+        Long applicationId = contract.getApplicationId();
+        Application application = applicationRepository.getApplicationById(applicationId);
+        if (!application.getDeveloper().getId().equals(developerId)) {
             throw new RuntimeException("Access denied");
         }
 

@@ -4,11 +4,14 @@ import com.lab.blps.dtos.ApplicationDto;
 import com.lab.blps.models.applications.Application;
 import com.lab.blps.models.applications.ApplicationStatus;
 import com.lab.blps.models.applications.MonetizationStatus;
+import com.lab.blps.models.applications.User;
 import com.lab.blps.repositories.applications.ApplicationRepository;
+import com.lab.blps.repositories.applications.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 @Service
 public class ApplicationService {
@@ -23,7 +26,10 @@ public class ApplicationService {
     }
 
     @Transactional
-    public Application uploadApplication(ApplicationDto applicationDto) {
+    public Application uploadApplication(ApplicationDto applicationDto, Long developerId) {
+        System.out.println("TRANSACTION ACTIVE: " + TransactionSynchronizationManager.isActualTransactionActive());
+        User developer = userRepository.findById(developerId)
+                .orElseThrow(() -> new RuntimeException("Developer not found"));
 
         Application application = new Application();
         application.setName(applicationDto.getName());
@@ -33,7 +39,8 @@ public class ApplicationService {
         application.setStatus(ApplicationStatus.UPLOADED);
         application.setMonetizationStatus(MonetizationStatus.NONE);
 
-        return applicationRepository.save(application);
+        applicationRepository.save(application);
+        return application;
     }
 
     @Transactional
@@ -67,10 +74,4 @@ public class ApplicationService {
     public Page<Application> getAllByDeveloper(Pageable pageable) {
         return applicationRepository.findByDeveloperId(userService.getCurrentUser().getId(), pageable);
     }
-
-
-    // и т.д. методы для получения списка приложений, подробной инфы и т.п.
-    /*
-      Здесь вроде все есть хз что еще добавить, не совсем понял про подробную инфу
-     */
 }

@@ -29,7 +29,7 @@ public class FinanceController {
     @PreAuthorize("hasRole('FINANCIER')")
     @PostMapping("/contracts")
     public Contract createContract(@RequestParam Long applicationId,
-                                   @RequestParam String pdfPath) {
+                                   @RequestParam String pdfPath) throws Exception {
         return monetizationService.createContractForApplication(applicationId, pdfPath);
     }
 }

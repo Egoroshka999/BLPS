@@ -1,6 +1,5 @@
 package com.lab.blps.models.contracts;
 
-import com.lab.blps.models.applications.Application;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,7 +18,5 @@ public class Contract {
     @Enumerated(EnumType.STRING)
     private ContractStatus status;
 
-    @OneToOne
-    @JoinColumn(name = "application_id")
-    private Application application;
+    private Long applicationId;
 }
