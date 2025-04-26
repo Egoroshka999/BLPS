@@ -4,6 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.xml.bind.annotation.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 
 
 @XmlRootElement(name = "user")
@@ -14,7 +21,7 @@ import lombok.*;
 @Entity
 @Getter
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,4 +39,9 @@ public class User {
 
     public User() {}
 
+    @JsonIgnore
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
 }

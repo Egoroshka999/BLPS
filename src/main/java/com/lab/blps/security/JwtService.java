@@ -31,6 +31,14 @@ public class JwtService {
     }
 
 
+    public Integer extractId(String token) {
+        return extractClaim(token, claims -> (Integer) claims.get("id"));
+    }
+
+    public String extractRole(String token) {
+        return extractClaim(token, claims -> (String) claims.get("role"));
+    }
+
     /**
      * Генерация токена
      */

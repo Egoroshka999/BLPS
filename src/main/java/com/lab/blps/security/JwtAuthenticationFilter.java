@@ -1,4 +1,6 @@
 package com.lab.blps.security;
+import com.lab.blps.models.applications.Role;
+import com.lab.blps.models.applications.User;
 import com.lab.blps.xml.XmlUserDetailsService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +28,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static final String HEADER_NAME = "Authorization";
 
     private final JwtService jwtService;
-    private final XmlUserDetailsService xmlUserDetailsService;
-
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
@@ -47,11 +47,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // Обрезаем префикс и получаем имя пользователя из токена
         var jwt = authHeader.substring(BEARER_PREFIX.length());
         var username = jwtService.extractUsername(jwt);
+        Long userId = Long.valueOf(jwtService.extractId(jwt)); // Извлекаем ID пользователя
+        var role = jwtService.extractRole(jwt); // Извлекаем роль
 
 
         if (StringUtils.isNotEmpty(username) && SecurityContextHolder.getContext().getAuthentication() == null) {
             // Создаем объект UserDetails без запроса к БД
-            UserDetails userDetails = this.xmlUserDetailsService.loadUserByUsername(username);
+            UserDetails userDetails = new User(userId, username, null, Role.valueOf(role));
 
 
             // Если токен валиден, то аутентифицируем пользователя

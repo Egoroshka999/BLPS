@@ -34,19 +34,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
          http.csrf(AbstractHttpConfigurer::disable)
-                 .cors(cors -> cors.configurationSource(request -> {
-                     var corsConfiguration = new CorsConfiguration();
-                     corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:5000"));
-                     corsConfiguration.setAllowedMethods(List.of(
-                             "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD", "CONNECT", "OPTIONS")
-                     );
-                     corsConfiguration.setAllowedHeaders(List.of("*"));
-                     corsConfiguration.setAllowCredentials(true);
-                     corsConfiguration.setMaxAge(10L);
-                     corsConfiguration.addExposedHeader("X-Response-Uuid");
-                     corsConfiguration.addExposedHeader("X-Total-Count");
-                     return corsConfiguration;
-                 }))
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authorizeHttpRequests(request -> {
                             request
