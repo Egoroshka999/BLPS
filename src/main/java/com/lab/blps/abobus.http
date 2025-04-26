@@ -11,12 +11,13 @@ Content-Type: application/json
 ###
 
 # 2️⃣ Получаем список приложений разработчика
-GET http://localhost:8080/api/developer/applications?developerId=1
+GET http://localhost:8080/api/developer/applications?developerId=3
 
 ###
 
 # 3️⃣ Модератор проверяет приложение (одобряет)
 POST http://localhost:8080/api/moderator/applications/1/review?approved=true
+###
 
 ###
 

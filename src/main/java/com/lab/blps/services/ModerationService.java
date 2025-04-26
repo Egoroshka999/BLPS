@@ -1,8 +1,8 @@
 package com.lab.blps.services;
 
-import com.lab.blps.models.Application;
-import com.lab.blps.models.ApplicationStatus;
-import com.lab.blps.repositories.ApplicationRepository;
+import com.lab.blps.models.applications.Application;
+import com.lab.blps.models.applications.ApplicationStatus;
+import com.lab.blps.repositories.applications.ApplicationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

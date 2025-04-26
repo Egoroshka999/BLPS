@@ -1,9 +1,10 @@
 package com.lab.blps.controllers;
 
-import com.lab.blps.models.Contract;
-import com.lab.blps.models.PaymentInfo;
-import com.lab.blps.models.PaymentStatus;
+import com.lab.blps.models.contracts.Contract;
+import com.lab.blps.models.applications.PaymentInfo;
+import com.lab.blps.models.applications.PaymentStatus;
 import com.lab.blps.services.MonetizationService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,6 +18,7 @@ public class FinanceController {
     }
 
     // Проверить корректность реквизитов
+    @PreAuthorize("hasRole('FINANCIER')")
     @PostMapping("/paymentinfo/{paymentInfoId}/validate")
     public PaymentInfo validatePaymentInfo(@PathVariable Long paymentInfoId,
                                            @RequestParam PaymentStatus paymentStatus) {
@@ -24,6 +26,7 @@ public class FinanceController {
     }
 
     // Создать договор (после проверки реквизитов)
+    @PreAuthorize("hasRole('FINANCIER')")
     @PostMapping("/contracts")
     public Contract createContract(@RequestParam Long applicationId,
                                    @RequestParam String pdfPath) {

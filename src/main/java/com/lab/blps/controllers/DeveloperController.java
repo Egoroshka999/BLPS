@@ -1,15 +1,14 @@
 package com.lab.blps.controllers;
 
 import com.lab.blps.dtos.ApplicationDto;
-import com.lab.blps.models.Application;
+import com.lab.blps.models.applications.Application;
 import com.lab.blps.services.ApplicationService;
 import com.lab.blps.services.MonetizationService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/developer")
@@ -25,59 +24,63 @@ public class DeveloperController {
     }
 
     // Получить список приложений текущего разработчика
+    @PreAuthorize("hasRole('DEVELOPER')")
     @GetMapping("/applications")
-    public Page<Application> getMyApplications(@RequestParam Long developerId, Pageable pageable) {
+    public Page<Application> getMyApplications(Pageable pageable) {
         // На будущее developerId брать из токена аутентификации
         // и фильтровать приложения по developerId.
         // Здесь упрощённый вариант.
-        return applicationService.getAllByDeveloper(developerId, pageable);
+        return applicationService.getAllByDeveloper(pageable);
     }
 
     // Загрузить новое приложение
+    @PreAuthorize("hasRole('DEVELOPER')")
     @PostMapping("/applications")
-    public Application uploadApplication(@RequestBody ApplicationDto applicationDto, @RequestParam Long developerId) {
-        return applicationService.uploadApplication(applicationDto, developerId);
+    public Application uploadApplication(@RequestBody ApplicationDto applicationDto) {
+        return applicationService.uploadApplication(applicationDto);
     }
 
     // Обновить приложение
+    @PreAuthorize("hasRole('DEVELOPER')")
     @PutMapping("/applications/{appId}")
-    public Application updateApplication(@PathVariable Long appId, @RequestBody ApplicationDto applicationDto, @RequestParam Long developerId) {
-        return applicationService.updateApplication(appId, applicationDto, developerId);
+    public Application updateApplication(@PathVariable Long appId, @RequestBody ApplicationDto applicationDto) {
+        return applicationService.updateApplication(appId, applicationDto);
     }
 
     // Удалить приложение
+    @PreAuthorize("hasRole('DEVELOPER')")
     @DeleteMapping("/applications/{appId}")
-    public Application deleteApplication(@PathVariable Long appId,
-                                         @RequestParam Long developerId) {
-        return applicationService.deleteApplication(appId, developerId);
+    public Application deleteApplication(@PathVariable Long appId) {
+        return applicationService.deleteApplication(appId);
     }
 
     // Подать заявку на монетизацию
+    @PreAuthorize("hasRole('DEVELOPER')")
     @PostMapping("/applications/{appId}/monetization/request")
     public Application requestMonetization(@PathVariable Long appId,
-                                           @RequestParam Long developerId,
                                            @RequestParam String accountNumber) {
-        return monetizationService.requestMonetization(appId, developerId, accountNumber);
+        return monetizationService.requestMonetization(appId, accountNumber);
     }
 
     // Остановить монетизацию
+    @PreAuthorize("hasRole('DEVELOPER')")
     @PostMapping("/applications/{appId}/monetization/stop")
-    public Application stopMonetization(@PathVariable Long appId,
-                                        @RequestParam Long developerId) {
-        return monetizationService.stopMonetization(appId, developerId);
+    public Application stopMonetization(@PathVariable Long appId) {
+        return monetizationService.stopMonetization(appId);
     }
 
     //Получение контракта на изучение
+    @PreAuthorize("hasRole('DEVELOPER')")
     @GetMapping("/contracts/{contractId}")
     public String getContract(@PathVariable Long contractId) {
         return monetizationService.getContractInfo(contractId);
     }
     // Ответ на договор
+    @PreAuthorize("hasRole('DEVELOPER')")
     @PostMapping("/contracts/{contractId}/response")
     public String contractResponse(@PathVariable Long contractId,
-                                   @RequestParam Long developerId,
                                    @RequestParam boolean accepted) {
-        monetizationService.handleContractResponse(contractId, developerId, accepted);
+        monetizationService.handleContractResponse(contractId, accepted);
         return accepted ? "Developer accepted the contract" : "Developer rejected the contract";
     }
 }

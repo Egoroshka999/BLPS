@@ -1,42 +1,35 @@
 package com.lab.blps.services;
 
 import com.lab.blps.dtos.ApplicationDto;
-import com.lab.blps.models.Application;
-import com.lab.blps.models.ApplicationStatus;
-import com.lab.blps.models.MonetizationStatus;
-import com.lab.blps.models.User;
-import com.lab.blps.repositories.ApplicationRepository;
-import com.lab.blps.repositories.UserRepository;
+import com.lab.blps.models.applications.Application;
+import com.lab.blps.models.applications.ApplicationStatus;
+import com.lab.blps.models.applications.MonetizationStatus;
+import com.lab.blps.repositories.applications.ApplicationRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 public class ApplicationService {
 
     private final ApplicationRepository applicationRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     public ApplicationService(ApplicationRepository applicationRepository,
-                              UserRepository userRepository) {
+                               UserService userService) {
         this.applicationRepository = applicationRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @Transactional
-    public Application uploadApplication(ApplicationDto applicationDto, Long developerId) {
-        User developer = userRepository.findById(developerId)
-                .orElseThrow(() -> new RuntimeException("Developer not found"));
+    public Application uploadApplication(ApplicationDto applicationDto) {
 
         Application application = new Application();
         application.setName(applicationDto.getName());
         application.setDescription(applicationDto.getDescription());
         application.setAppFilePath(applicationDto.getAppFilePath());
-        application.setDeveloper(developer);
+        application.setDeveloper(userService.getCurrentUser());
         application.setStatus(ApplicationStatus.UPLOADED);
         application.setMonetizationStatus(MonetizationStatus.NONE);
 
@@ -44,11 +37,11 @@ public class ApplicationService {
     }
 
     @Transactional
-    public Application deleteApplication(Long applicationId, Long developerId) {
+    public Application deleteApplication(Long applicationId) {
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new RuntimeException("Application not found"));
 
-        if (!application.getDeveloper().getId().equals(developerId)) {
+        if (!application.getDeveloper().equals(userService.getCurrentUser())) {
             throw new RuntimeException("Access denied");
         }
         application.setStatus(ApplicationStatus.DELETED);
@@ -56,11 +49,11 @@ public class ApplicationService {
     }
 
     @Transactional
-    public Application updateApplication(Long applicationId, ApplicationDto applicationDto, Long developerId) {
+    public Application updateApplication(Long applicationId, ApplicationDto applicationDto) {
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new RuntimeException("Application not found"));
 
-        if (!application.getDeveloper().getId().equals(developerId)) {
+        if (!application.getDeveloper().equals(userService.getCurrentUser())) {
             throw new RuntimeException("Access denied");
         }
 
@@ -71,8 +64,8 @@ public class ApplicationService {
         return applicationRepository.save(application);
     }
 
-    public Page<Application> getAllByDeveloper(Long developerId, Pageable pageable) {
-        return applicationRepository.findByDeveloperId(developerId, pageable);
+    public Page<Application> getAllByDeveloper(Pageable pageable) {
+        return applicationRepository.findByDeveloperId(userService.getCurrentUser().getId(), pageable);
     }
 
 

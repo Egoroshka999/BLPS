@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<users>
+    <user>
+        <username>test1</username>
+        <password>{sha512}sW7X0ks+y9QWTc2tN04IwKt1GKoH+dNoPzTCs8Z6FYMCaMtKVsH/b1TI5Up5X1uHwIZotR+C0Ak/e67n0pgRgQ==</password>
+        <role>DEVELOPER</role>
+    </user>
+    <user>
+        <username>mod1</username>
+        <password>{sha512}hzvT5cxAh3gHkZIEhyJ/q8Wva57f3BViear2E6J5sPKfC0fx4Iq25OyO5cDMutgkD3TgCj4X1Jt8z9CIsMz+9g==</password>
+        <role>MODERATOR</role>
+    </user>
+    <user>
+        <username>fin1</username>
+        <password>{sha512}RIWVk0+EmIRbg6rb2Y3cJifktbYggxdf0zkgGK0Tm63NfFd5jI8vMzxxHeAsec7YbN62NGUScmJz+s4pnq8tTw==</password>
+        <role>FINANCIER</role>
+    </user>
+    <user>
+        <username>dev1</username>
+        <password>{sha512}rt/bm5jrzk8dNmuicPhEWcsc+cf3LaK7FkourIwjYHiYWXSnxUrnfKA2bXFeB0/hoLtn/V3wLPvesDyKTZ0GUg==</password>
+        <role>DEVELOPER</role>
+    </user>
+</users>
