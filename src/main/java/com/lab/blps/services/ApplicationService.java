@@ -17,19 +17,19 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 public class ApplicationService {
 
     private final ApplicationRepository applicationRepository;
+    private final UserRepository userRepository;
     private final UserService userService;
 
-    public ApplicationService(ApplicationRepository applicationRepository,
-                               UserService userService) {
+    public ApplicationService(ApplicationRepository applicationRepository, UserRepository userRepository,
+                              UserService userService) {
         this.applicationRepository = applicationRepository;
+        this.userRepository = userRepository;
         this.userService = userService;
     }
 
     @Transactional
-    public Application uploadApplication(ApplicationDto applicationDto, Long developerId) {
+    public Application uploadApplication(ApplicationDto applicationDto) {
         System.out.println("TRANSACTION ACTIVE: " + TransactionSynchronizationManager.isActualTransactionActive());
-        User developer = userRepository.findById(developerId)
-                .orElseThrow(() -> new RuntimeException("Developer not found"));
 
         Application application = new Application();
         application.setName(applicationDto.getName());
