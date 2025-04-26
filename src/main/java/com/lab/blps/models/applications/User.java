@@ -2,17 +2,23 @@ package com.lab.blps.models.applications;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.xml.bind.annotation.*;
+import lombok.*;
 
+
+@XmlRootElement(name = "user")
+@XmlAccessorType(XmlAccessType.FIELD)
 @Data
-@NoArgsConstructor
+@Builder
+@AllArgsConstructor
 @Entity
+@Getter
 @Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @XmlTransient
     private Long id;
 
     private String username;
@@ -23,4 +29,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
+    public User() {}
+
 }

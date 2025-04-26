@@ -17,12 +17,12 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 public class ApplicationService {
 
     private final ApplicationRepository applicationRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     public ApplicationService(ApplicationRepository applicationRepository,
-                              UserRepository userRepository) {
+                               UserService userService) {
         this.applicationRepository = applicationRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @Transactional
@@ -35,7 +35,7 @@ public class ApplicationService {
         application.setName(applicationDto.getName());
         application.setDescription(applicationDto.getDescription());
         application.setAppFilePath(applicationDto.getAppFilePath());
-        application.setDeveloper(developer);
+        application.setDeveloper(userService.getCurrentUser());
         application.setStatus(ApplicationStatus.UPLOADED);
         application.setMonetizationStatus(MonetizationStatus.NONE);
 
@@ -44,11 +44,11 @@ public class ApplicationService {
     }
 
     @Transactional
-    public Application deleteApplication(Long applicationId, Long developerId) {
+    public Application deleteApplication(Long applicationId) {
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new RuntimeException("Application not found"));
 
-        if (!application.getDeveloper().getId().equals(developerId)) {
+        if (!application.getDeveloper().equals(userService.getCurrentUser())) {
             throw new RuntimeException("Access denied");
         }
         application.setStatus(ApplicationStatus.DELETED);
@@ -56,11 +56,11 @@ public class ApplicationService {
     }
 
     @Transactional
-    public Application updateApplication(Long applicationId, ApplicationDto applicationDto, Long developerId) {
+    public Application updateApplication(Long applicationId, ApplicationDto applicationDto) {
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new RuntimeException("Application not found"));
 
-        if (!application.getDeveloper().getId().equals(developerId)) {
+        if (!application.getDeveloper().equals(userService.getCurrentUser())) {
             throw new RuntimeException("Access denied");
         }
 
@@ -71,7 +71,7 @@ public class ApplicationService {
         return applicationRepository.save(application);
     }
 
-    public Page<Application> getAllByDeveloper(Long developerId, Pageable pageable) {
-        return applicationRepository.findByDeveloperId(developerId, pageable);
+    public Page<Application> getAllByDeveloper(Pageable pageable) {
+        return applicationRepository.findByDeveloperId(userService.getCurrentUser().getId(), pageable);
     }
 }
