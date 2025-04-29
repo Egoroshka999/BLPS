@@ -1,0 +1,147 @@
+POST localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/auth/sign-up
+Content-Type: application/json
+
+{
+  "username": "dev1",
+  "password": "dev1",
+  "role": "DEVELOPER"
+}
+
+###
+
+POST localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/auth/sign-in
+Content-Type: application/json
+
+{
+  "username": "fin1",
+  "password": "fin1"
+}
+
+###
+
+@dev = eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiREVWRUxPUEVSIiwiaWQiOjEsInN1YiI6ImRldjEiLCJpYXQiOjE3NDU2NzIwMDEsImV4cCI6MTc0NTY3NTYwMX0.DFfJhABUz4Le75z5GBb4wHFil2DNzLvvTgtOvGuG8gQ
+@mod = eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiTU9ERVJBVE9SIiwiaWQiOjIsInN1YiI6Im1vZDEiLCJpYXQiOjE3NDU2NzIwNzYsImV4cCI6MTc0NTY3NTY3Nn0.atPqb4ydmmQmFEBDJdBGWVhUQBJ2qoj9NeqntxtgP1A
+@fin = eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiRklOQU5DSUVSIiwiaWQiOjMsInN1YiI6ImZpbjEiLCJpYXQiOjE3NDU2NzIwOTQsImV4cCI6MTc0NTY3NTY5NH0.82CmxOpqg26LYmSJqpZo9ZZ_BVSeW49mavHhNfCkI0E
+
+
+###
+# 1️⃣ Разработчик загружает приложение
+POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/applications
+Authorization: Bearer {{dev}}
+Content-Type: application/json
+
+{
+  "name": "App",
+  "description": "This is a test app",
+  "appFilePath": "amogus.ru/uploads/myapp.apk"
+}
+
+###
+
+# 2️⃣ Получаем список приложений разработчика
+GET http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/applications
+Authorization: Bearer {{dev}}
+
+
+###
+
+POST localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/auth/sign-up
+Content-Type: application/json
+
+{
+  "username": "mod1",
+  "password": "mod1",
+  "role": "MODERATOR"
+}
+
+###
+# 3️⃣ Модератор проверяет приложение (одобряет)
+POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/moderator/applications/1/review?approved=true
+Authorization: Bearer {{mod}}
+
+###
+
+
+# 4️⃣ Разработчику предлагают монетизацию (он может отказаться или сразу подключить)
+# Если разработчик отказывается, пропустить следующий шаг
+
+POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/applications/1/monetization/request?accountNumber=1234567890
+Authorization: Bearer {{dev}}
+
+
+###
+
+POST localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/auth/sign-up
+Content-Type: application/json
+
+{
+  "username": "fin1",
+  "password": "fin1",
+  "role": "FINANCIER"
+}
+
+###
+
+# 5️⃣ Финансовый отдел проверяет реквизиты (может отклонить)
+POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/finance/paymentinfo/1/validate?paymentStatus=REJECTED
+Authorization: Bearer {{fin}}
+
+
+###
+
+# 6️⃣ Разработчик исправляет реквизиты и снова отправляет
+POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/applications/1/monetization/request?accountNumber=2134567890
+Authorization: Bearer {{dev}}
+###
+
+# 7️⃣ Финансовый отдел повторно проверяет реквизиты (утверждает)
+POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/finance/paymentinfo/2/validate?paymentStatus=APPROVED
+Authorization: Bearer {{fin}}
+
+
+###
+
+# 8️⃣ Финансовый отдел создаёт договор
+POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/finance/contracts?applicationId=1&pdfPath=/path/to/contract.pdf
+Authorization: Bearer {{fin}}
+
+
+###
+
+# 9️⃣ Разработчик подписывает договор (или отказывается)
+# Если разработчик отказывается, пропустите следующий шаг
+GET http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/contracts/1
+Authorization: Bearer {{dev}}
+
+
+###
+# ыыы
+POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/contracts/1/response?accepted=true
+Authorization: Bearer {{dev}}
+
+
+###
+
+# 🔟 Разработчик останавливает монетизацию
+POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/applications/1/monetization/stop
+Authorization: Bearer {{dev}}
+
+
+###
+
+# 1️⃣1️⃣ Разработчик обновляет приложение
+PUT http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/applications/1
+Authorization: Bearer {{dev}}
+Content-Type: application/json
+
+{
+  "name": "Updated My App",
+  "description": "Updated description",
+  "appFilePath": "amogus.ru/uploads/myapp.apk"
+}
+
+###
+
+# 1️⃣2️⃣ Разработчик удаляет приложение
+DELETE http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/applications/1
+Authorization: Bearer {{dev}}

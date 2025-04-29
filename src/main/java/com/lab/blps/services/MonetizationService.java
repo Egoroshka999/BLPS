@@ -19,21 +19,23 @@ public class MonetizationService {
     private final ApplicationRepository applicationRepository;
     private final PaymentInfoRepository paymentInfoRepository;
     private final ContractRepository contractRepository;
+    private final UserService userService;
 
     public MonetizationService(ApplicationRepository applicationRepository,
                                PaymentInfoRepository paymentInfoRepository,
-                               ContractRepository contractRepository) {
+                               ContractRepository contractRepository, UserService userService) {
         this.applicationRepository = applicationRepository;
         this.paymentInfoRepository = paymentInfoRepository;
         this.contractRepository = contractRepository;
+        this.userService = userService;
     }
 
     /**
      * Developer подаёт заявку на монетизацию (при необходимости создаёт PaymentInfo).
      */
     @Transactional
-    public Application requestMonetization(Long applicationId, Long developerId, String accountNumber) {
-        Application application = checkDeveloperAccess(applicationId, developerId);
+    public Application requestMonetization(Long applicationId, String accountNumber) {
+        Application application = checkDeveloperAccess(applicationId);
 
         // Создать/обновить платежные реквизиты
 
@@ -109,13 +111,13 @@ public class MonetizationService {
      * Developer соглашается/отказывается от договора
      */
     @Transactional
-    public Contract handleContractResponse(Long contractId, Long developerId, boolean accepted) {
+    public Contract handleContractResponse(Long contractId, boolean accepted) {
         Contract contract = contractRepository.findById(contractId)
                 .orElseThrow(() -> new RuntimeException("Contract not found"));
 
         Long applicationId = contract.getApplicationId();
         Application application = applicationRepository.getApplicationById(applicationId);
-        if (!application.getDeveloper().getId().equals(developerId)) {
+        if (!application.getDeveloper().equals(userService.getCurrentUser())) {
             throw new RuntimeException("Access denied");
         }
 
@@ -138,16 +140,16 @@ public class MonetizationService {
      * Developer останавливает монетизацию
      */
     @Transactional
-    public Application stopMonetization(Long applicationId, Long developerId) {
-        Application application = checkDeveloperAccess(applicationId, developerId);
+    public Application stopMonetization(Long applicationId) {
+        Application application = checkDeveloperAccess(applicationId);
         application.setMonetizationStatus(MonetizationStatus.STOPPED);
         return applicationRepository.save(application);
     }
 
-    private Application checkDeveloperAccess(Long applicationId, Long developerId) {
+    private Application checkDeveloperAccess(Long applicationId) {
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new RuntimeException("Application not found"));
-        if (!application.getDeveloper().getId().equals(developerId)) {
+        if (!application.getDeveloper().equals(userService.getCurrentUser())) {
             throw new RuntimeException("Access denied");
         }
         return application;

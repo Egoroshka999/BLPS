@@ -1,3 +1,5 @@
+import org.gradle.api.file.DuplicatesStrategy
+
 plugins {
     java
     war
@@ -49,19 +51,26 @@ dependencies {
 //        exclude (group = "org.springframework.boot", module = "spring-boot-starter-logging")
 //    }
 //    implementation("org.springframework.boot:spring-boot-starter-jdbc")
-//    implementation("org.springframework.boot:spring-boot-starter-security")
-//    implementation("org.springframework.boot:spring-boot-starter-web-services")
-//    implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-web-services")
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
 //    implementation("org.springframework.modulith:spring-modulith-starter-core")
-//    implementation("org.springframework.modulith:spring-modulith-starter-jdbc")
 //    implementation("org.springframework.modulith:spring-modulith-starter-jpa")
-//    implementation("org.springframework.session:spring-session-jdbc")
+    implementation("org.apache.commons:commons-lang3:3.17.0")
+    implementation("io.jsonwebtoken:jjwt-api:0.12.6")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
+//    compileOnly("org.projectlombok:lombok")
 //    developmentOnly("org.springframework.boot:spring-boot-devtools")
 //    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
+//    runtimeOnly("org.postgresql:postgresql")
 //    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+//    annotationProcessor("org.projectlombok:lombok")
+    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 //    testImplementation("org.springframework.boot:spring-boot-starter-test")
 //    testImplementation("io.projectreactor:reactor-test")
 //    testImplementation("org.springframework.modulith:spring-modulith-starter-test")
+//    testImplementation("com.h2database:h2")
 //    testImplementation("org.springframework.security:spring-security-test")
 //    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
@@ -75,3 +84,17 @@ dependencyManagement {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+sourceSets {
+    main {
+        resources {
+            srcDirs("src/main/resources")
+        }
+    }
+}
+
+tasks.processResources {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+
