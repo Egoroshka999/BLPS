@@ -10,6 +10,7 @@ plugins {
 group = "com.lab"
 version = "0.0.1-SNAPSHOT"
 
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
@@ -73,6 +74,8 @@ dependencies {
 //    testImplementation("com.h2database:h2")
 //    testImplementation("org.springframework.security:spring-security-test")
 //    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation("jakarta.resource:jakarta.resource-api:2.1.0")
+    implementation("org.apache.httpcomponents.client5:httpclient5:5.4.4")
 }
 
 dependencyManagement {

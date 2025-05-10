@@ -18,7 +18,7 @@ public class ModeratorController {
     @PreAuthorize("hasRole('MODERATOR')")
     @PostMapping("/applications/{appId}/review")
     public Application reviewApplication(@PathVariable Long appId,
-                                         @RequestParam boolean approved) {
+                                         @RequestParam boolean approved) throws Exception {
         // Модератор проверяет приложение
         return moderationService.reviewApplication(appId, approved);
     }

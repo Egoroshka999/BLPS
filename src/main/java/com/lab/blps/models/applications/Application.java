@@ -25,6 +25,8 @@ public class Application {
 
     private String appFilePath;
 
+    private String externalIssueKey;
+
     @ManyToOne
     @JoinColumn(name = "developer_id")
     private User developer;

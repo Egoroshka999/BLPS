@@ -30,6 +30,38 @@ services:
     volumes:
       - pgdata_contracts:/var/lib/postgresql/data
 
+  jira:
+    image: atlassian/jira-software:latest
+    container_name: jira
+    environment:
+      - ATL_JDBC_URL=jdbc:postgresql://postgres-jira:5432/jiradb
+      - ATL_JDBC_USER=jira
+      - ATL_JDBC_PASSWORD=jira
+    ports:
+      - "8081:8080"
+    networks:
+      - google_play_network
+    depends_on:
+      - postgres-jira
+
+  postgres-jira:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: jiradb
+      POSTGRES_USER: jira
+      POSTGRES_PASSWORD: jira
+    networks:
+      - google_play_network
+
+  maildev:
+    image: maildev/maildev
+    container_name: maildev
+    ports:
+      - "8888:1080"
+      - "1025:1025"
+    networks:
+      - google_play_network
+
 networks:
   google_play_network:
     driver: bridge

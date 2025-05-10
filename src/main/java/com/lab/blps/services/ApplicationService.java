@@ -1,6 +1,7 @@
 package com.lab.blps.services;
 
 import com.lab.blps.dtos.ApplicationDto;
+import com.lab.blps.jca.JiraConnection;
 import com.lab.blps.models.applications.Application;
 import com.lab.blps.models.applications.ApplicationStatus;
 import com.lab.blps.models.applications.MonetizationStatus;
@@ -20,15 +21,18 @@ public class ApplicationService {
     private final UserRepository userRepository;
     private final UserService userService;
 
+    private final JiraConnection jira;
+
     public ApplicationService(ApplicationRepository applicationRepository, UserRepository userRepository,
-                              UserService userService) {
+                              UserService userService, JiraConnection jira) {
         this.applicationRepository = applicationRepository;
         this.userRepository = userRepository;
         this.userService = userService;
+        this.jira = jira;
     }
 
     @Transactional
-    public Application uploadApplication(ApplicationDto applicationDto) {
+    public Application uploadApplication(ApplicationDto applicationDto) throws Exception {
         System.out.println("TRANSACTION ACTIVE: " + TransactionSynchronizationManager.isActualTransactionActive());
 
         Application application = new Application();
@@ -39,7 +43,17 @@ public class ApplicationService {
         application.setStatus(ApplicationStatus.UPLOADED);
         application.setMonetizationStatus(MonetizationStatus.NONE);
 
+
+
+        String key = jira.createIssue(
+                "BLPS",
+                "Новая заявка '" + application.getName() + "'",
+                application.getDescription()
+        );
+        application.setExternalIssueKey(key);
+
         applicationRepository.save(application);
+
         return application;
     }
 

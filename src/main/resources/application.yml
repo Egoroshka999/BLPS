@@ -1,0 +1,4 @@
+jira:
+  url: http://localhost:8081
+  username: jira
+  password: jira

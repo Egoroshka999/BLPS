@@ -36,7 +36,7 @@ public class DeveloperController {
     // Загрузить новое приложение
     @PreAuthorize("hasRole('DEVELOPER')")
     @PostMapping("/applications")
-    public Application uploadApplication(@RequestBody ApplicationDto applicationDto) {
+    public Application uploadApplication(@RequestBody ApplicationDto applicationDto) throws Exception {
         return applicationService.uploadApplication(applicationDto);
     }
 
