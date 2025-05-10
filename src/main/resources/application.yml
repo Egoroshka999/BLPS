@@ -2,3 +2,15 @@ jira:
   url: http://localhost:8081
   username: jira
   password: jira
+spring:
+  mail:
+    host: smtp.example.com
+    port: 587
+    username: email@example.com
+    password: password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

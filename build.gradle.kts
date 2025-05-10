@@ -36,6 +36,8 @@ dependencies {
 //    implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-activemq")
+    implementation("org.apache.qpid:qpid-jms-client:1.11.0")
     providedCompile("jakarta.servlet:jakarta.servlet-api:6.0.0")
 //    compileOnly("org.springframework.boot:spring-boot-starter-tomcat")
 //    implementation("org.jboss.slf4j:slf4j-jboss-logmanager:2.0.1.Final")
@@ -76,6 +78,8 @@ dependencies {
 //    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     implementation("jakarta.resource:jakarta.resource-api:2.1.0")
     implementation("org.apache.httpcomponents.client5:httpclient5:5.4.4")
+    implementation("org.springframework.boot:spring-boot-starter-quartz")
+
 }
 
 dependencyManagement {

@@ -6,6 +6,8 @@ import com.lab.blps.models.applications.PaymentInfo;
 import com.lab.blps.models.applications.PaymentStatus;
 import com.lab.blps.models.contracts.Contract;
 import com.lab.blps.models.contracts.ContractStatus;
+import com.lab.blps.notification.dto.EmailNotificationPayload;
+import com.lab.blps.notification.service.EmailNotificationClient;
 import com.lab.blps.repositories.applications.ApplicationRepository;
 import com.lab.blps.repositories.contracts.ContractRepository;
 import com.lab.blps.repositories.applications.PaymentInfoRepository;
@@ -20,14 +22,16 @@ public class MonetizationService {
     private final PaymentInfoRepository paymentInfoRepository;
     private final ContractRepository contractRepository;
     private final UserService userService;
+    private final EmailNotificationClient emailNotificationClient;
 
     public MonetizationService(ApplicationRepository applicationRepository,
                                PaymentInfoRepository paymentInfoRepository,
-                               ContractRepository contractRepository, UserService userService) {
+                               ContractRepository contractRepository, UserService userService, EmailNotificationClient emailNotificationClient) {
         this.applicationRepository = applicationRepository;
         this.paymentInfoRepository = paymentInfoRepository;
         this.contractRepository = contractRepository;
         this.userService = userService;
+        this.emailNotificationClient = emailNotificationClient;
     }
 
     /**
@@ -86,6 +90,7 @@ public class MonetizationService {
         contract.setApplicationId(applicationId);
         contract.setPdfPath(pdfPath);
         contract.setStatus(ContractStatus.SENT_TO_DEVELOPER);
+        emailNotificationClient.send(new EmailNotificationPayload(applicationRepository.getApplicationById(applicationId).getDeveloper().getEmail(), "Contract gotov", "Скачйте ваш контракт по ссылке" + pdfPath));
 
         contractRepository.save(contract);
 
