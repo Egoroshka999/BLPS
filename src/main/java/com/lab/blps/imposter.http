@@ -4,7 +4,8 @@ Content-Type: application/json
 {
   "username": "dev1",
   "password": "dev1",
-  "role": "DEVELOPER"
+  "role": "DEVELOPER",
+  "email": "egord2020@mail.ru"
 }
 
 ###
@@ -19,7 +20,7 @@ Content-Type: application/json
 
 ###
 
-@dev = eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiREVWRUxPUEVSIiwiaWQiOjEsInN1YiI6ImRldjEiLCJpYXQiOjE3NDY4ODA0NzEsImV4cCI6MTc0Njg4NDA3MX0.lCkz6hz5zDuIUWvy6pBI9k-WsFc_jsDADoBx0vGE4zo
+@dev = eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiREVWRUxPUEVSIiwiaWQiOjEsInN1YiI6ImRldjEiLCJpYXQiOjE3NDY4ODkzNzksImV4cCI6MTc0Njg5Mjk3OX0.JkUI9QaMjz4J2PXA7HUKuSpv3R_Kj_FzbdfnU7z7W9M
 @mod = eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiTU9ERVJBVE9SIiwiaWQiOjIsInN1YiI6Im1vZDEiLCJpYXQiOjE3NDY4Nzk0MzgsImV4cCI6MTc0Njg4MzAzOH0.lQMRZppAsVzIWV79DXDMGFV_h_9o5xyT9Jw5g5hrZOg
 @fin = eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiRklOQU5DSUVSIiwiaWQiOjMsInN1YiI6ImZpbjEiLCJpYXQiOjE3NDU2NzIwOTQsImV4cCI6MTc0NTY3NTY5NH0.82CmxOpqg26LYmSJqpZo9ZZ_BVSeW49mavHhNfCkI0E
 
