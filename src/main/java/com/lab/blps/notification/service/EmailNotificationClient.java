@@ -15,7 +15,7 @@ public class EmailNotificationClient {
 
     public void send(EmailNotificationPayload req) {
         rest.postForEntity(
-                "http://email-notification:8081/email",
+                "http://localhost:9999/email",
                 req,
                 Void.class
         );

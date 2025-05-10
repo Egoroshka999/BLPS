@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import java.time.LocalDateTime;
+
 @Service
 public class ApplicationService {
 
@@ -41,8 +43,9 @@ public class ApplicationService {
         application.setDeveloper(userService.getCurrentUser());
         application.setStatus(ApplicationStatus.UPLOADED);
         application.setMonetizationStatus(MonetizationStatus.NONE);
+        application.setCreatedAt(LocalDateTime.now());
 
-
+        applicationRepository.save(application);
 
         String key = jira.createIssue(
                 "BLPS",
@@ -50,8 +53,6 @@ public class ApplicationService {
                 application.getDescription()
         );
         application.setExternalIssueKey(key);
-
-        applicationRepository.save(application);
 
         return application;
     }
@@ -81,6 +82,7 @@ public class ApplicationService {
         application.setDescription(applicationDto.getDescription());
         application.setAppFilePath(applicationDto.getAppFilePath());
         application.setStatus(ApplicationStatus.UPLOADED);
+        application.setCreatedAt(LocalDateTime.now());
         return applicationRepository.save(application);
     }
 
