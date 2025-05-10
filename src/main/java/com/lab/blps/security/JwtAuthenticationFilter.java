@@ -47,11 +47,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         var username = jwtService.extractUsername(jwt);
         Long userId = Long.valueOf(jwtService.extractId(jwt)); // Извлекаем ID пользователя
         var role = jwtService.extractRole(jwt); // Извлекаем роль
+        var email = jwtService.extractEmail(jwt); // Извлекаем email
 
 
         if (StringUtils.isNotEmpty(username) && SecurityContextHolder.getContext().getAuthentication() == null) {
             // Создаем объект UserDetails без запроса к БД
-            UserDetails userDetails = new User(userId, username, null, Role.valueOf(role));
+            UserDetails userDetails = new User(userId, username, null, Role.valueOf(role), email);
 
 
             // Если токен валиден, то аутентифицируем пользователя

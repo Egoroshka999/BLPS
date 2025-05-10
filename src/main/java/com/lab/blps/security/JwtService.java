@@ -38,6 +38,10 @@ public class JwtService {
         return extractClaim(token, claims -> (String) claims.get("role"));
     }
 
+    public String extractEmail(String token) {
+        return extractClaim(token, claims -> (String) claims.get("email"));
+    }
+
     /**
      * Генерация токена
      */
