@@ -5,7 +5,6 @@ import com.lab.blps.jca.JiraConnection;
 import com.lab.blps.models.applications.Application;
 import com.lab.blps.models.applications.ApplicationStatus;
 import com.lab.blps.models.applications.MonetizationStatus;
-import com.lab.blps.models.applications.User;
 import com.lab.blps.repositories.applications.ApplicationRepository;
 import com.lab.blps.repositories.applications.UserRepository;
 import org.springframework.data.domain.Page;

@@ -3,6 +3,9 @@ package com.lab.blps.models.applications;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -30,5 +33,9 @@ public class Application {
     @ManyToOne
     @JoinColumn(name = "developer_id")
     private User developer;
+
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 }
 
