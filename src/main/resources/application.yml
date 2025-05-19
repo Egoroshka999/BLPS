@@ -2,15 +2,10 @@ jira:
   url: http://localhost:8081
   username: jira
   password: jira
-spring:
-  mail:
-    host: smtp.example.com
-    port: 587
-    username: email@example.com
-    password: password
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
+  spring.mail.host: maildev
+  spring.mail.port: 1025
+  spring.mail.username:
+  spring.mail.password:
+  spring.mail.protocol: smtp
+  spring.mail.properties.mail.smtp.auth: false
+  spring.mail.properties.mail.smtp.starttls.enable: false

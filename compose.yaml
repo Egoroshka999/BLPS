@@ -62,6 +62,8 @@ services:
     networks:
       - google_play_network
 
+
+
   rabbitmq:
     image: rabbitmq:3.13-management
     container_name: rabbitmq
