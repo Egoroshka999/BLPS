@@ -1,0 +1,76 @@
+# 1 Разработчик загружает приложение
+POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/applications?developerId=1
+Content-Type: application/json
+
+{
+  "name": "My App",
+  "description": "This is a test app",
+  "appFilePath": "amogus.ru/uploads/myapp.apk"
+}
+
+###
+
+# 2 Получаем список приложений разработчика
+GET http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/applications?developerId=1&page=0&size=10
+
+###
+
+# 3 Модератор проверяет приложение (одобряет)
+POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/moderator/applications/1/review?approved=true
+
+###
+
+# 4 Разработчику предлагают монетизацию (он может отказаться или сразу подключить)
+
+POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/applications/1/monetization/request?developerId=1&accountNumber=1234567890
+
+
+###
+
+# 5 Финансовый отдел проверяет реквизиты (может отклонить)
+POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/finance/paymentinfo/1/validate?paymentStatus=REJECTED
+
+###
+
+# 6 Разработчик исправляет реквизиты и снова отправляет
+POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/applications/1/monetization/request?developerId=1&accountNumber=2134567890
+###
+
+# 7 Финансовый отдел повторно проверяет реквизиты (утверждает)
+POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/finance/paymentinfo/1/validate?paymentStatus=APPROVED
+
+###
+
+# 8 Финансовый отдел создаёт договор
+POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/finance/contracts?applicationId=1&pdfPath=/path/to/contract.pdf
+
+###
+
+# 9 Разработчик получает контракт
+GET http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/contracts/1
+
+###
+# 10 Разработчик подписывает договор (или отказывается)
+POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/contracts/1/response?developerId=1&accepted=true
+
+###
+
+# 11 Разработчик останавливает монетизацию
+POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/applications/1/monetization/stop?developerId=1
+
+###
+
+# 12 Разработчик обновляет приложение
+PUT http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/applications/1?developerId=1
+Content-Type: application/json
+
+{
+  "name": "Updated My App",
+  "description": "Updated description",
+  "appFilePath": "amogus.ru/uploads/myapp.apk"
+}
+
+###
+
+# 13 Разработчик удаляет приложение
+DELETE http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/applications/1?developerId=1
