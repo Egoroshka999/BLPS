@@ -1,16 +1,16 @@
 package com.lab.blps.services;
 
+import com.lab.blps.controllers.EmailController;
 import com.lab.blps.models.applications.Application;
 import com.lab.blps.models.applications.MonetizationStatus;
 import com.lab.blps.models.applications.PaymentInfo;
 import com.lab.blps.models.applications.PaymentStatus;
 import com.lab.blps.models.contracts.Contract;
 import com.lab.blps.models.contracts.ContractStatus;
-import com.lab.blps.notification.dto.EmailNotificationPayload;
-import com.lab.blps.notification.service.EmailNotificationClient;
 import com.lab.blps.repositories.applications.ApplicationRepository;
 import com.lab.blps.repositories.contracts.ContractRepository;
 import com.lab.blps.repositories.applications.PaymentInfoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,16 +22,18 @@ public class MonetizationService {
     private final PaymentInfoRepository paymentInfoRepository;
     private final ContractRepository contractRepository;
     private final UserService userService;
-    private final EmailNotificationClient emailNotificationClient;
+
+    @Autowired
+    private EmailController emailNotificationSender;
+
 
     public MonetizationService(ApplicationRepository applicationRepository,
                                PaymentInfoRepository paymentInfoRepository,
-                               ContractRepository contractRepository, UserService userService, EmailNotificationClient emailNotificationClient) {
+                               ContractRepository contractRepository, UserService userService) {
         this.applicationRepository = applicationRepository;
         this.paymentInfoRepository = paymentInfoRepository;
         this.contractRepository = contractRepository;
         this.userService = userService;
-        this.emailNotificationClient = emailNotificationClient;
     }
 
     /**
@@ -90,7 +92,7 @@ public class MonetizationService {
         contract.setApplicationId(applicationId);
         contract.setPdfPath(pdfPath);
         contract.setStatus(ContractStatus.SENT_TO_DEVELOPER);
-        emailNotificationClient.send(new EmailNotificationPayload(applicationRepository.getApplicationById(applicationId).getDeveloper().getEmail(), "Contract gotov", "Скачйте ваш контракт по ссылке" + pdfPath));
+        emailNotificationSender.sendMessage("Скачйте ваш контракт по ссылке" + pdfPath);
 
         contractRepository.save(contract);
 

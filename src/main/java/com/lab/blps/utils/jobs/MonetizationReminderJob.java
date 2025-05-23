@@ -1,9 +1,8 @@
 package com.lab.blps.utils.jobs;
 
+import com.lab.blps.controllers.EmailController;
 import com.lab.blps.models.applications.Application;
 import com.lab.blps.models.applications.User;
-import com.lab.blps.notification.dto.EmailNotificationPayload;
-import com.lab.blps.notification.service.EmailNotificationClient;
 import com.lab.blps.repositories.applications.ApplicationRepository;
 import com.lab.blps.repositories.applications.UserRepository;
 import org.quartz.Job;
@@ -21,7 +20,7 @@ public class MonetizationReminderJob implements Job {
     private ApplicationRepository applicationRepository;
 
     @Autowired
-    private EmailNotificationClient emailSender;
+    private EmailController emailSender;
 
     @Autowired
     private UserRepository userRepository;
@@ -34,11 +33,7 @@ public class MonetizationReminderJob implements Job {
         for (Application app : apps) {
             User dev = app.getDeveloper();
             if (dev.getEmail() != null) {
-                emailSender.send(new EmailNotificationPayload(
-                        dev.getEmail(),
-                        "Напоминание о монетизации",
-                        "Вы ещё не подали заявку на монетизацию приложения: " + app.getName()
-                ));
+                emailSender.sendMessage("Вы ещё не подали заявку на монетизацию приложения: " + app.getName());
             }
         }
     }
