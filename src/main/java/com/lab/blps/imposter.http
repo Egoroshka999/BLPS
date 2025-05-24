@@ -1,4 +1,4 @@
-POST localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/auth/sign-up
+POST localhost:8080/BLPS-0.0.1-SNAPSHOT-plain/api/auth/sign-up
 Content-Type: application/json
 
 {
