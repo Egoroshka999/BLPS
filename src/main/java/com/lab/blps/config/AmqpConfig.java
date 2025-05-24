@@ -16,7 +16,7 @@ public class AmqpConfig {
 
     @Bean
     public ConnectionFactory amqpConnectionFactory() {
-        var brokerUrl = "amqp://rabbitmq:5672";
+        var brokerUrl = "amqp://localhost:5672";
         return new JmsConnectionFactory(
                 rabbitProperties.getUsername(),
                 rabbitProperties.getPassword(),

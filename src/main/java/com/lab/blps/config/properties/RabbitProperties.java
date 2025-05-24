@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Getter
 @Setter
-@ConfigurationProperties("artemis")
+@ConfigurationProperties("rabbit")
 public class RabbitProperties {
     private String username;
     private String password;

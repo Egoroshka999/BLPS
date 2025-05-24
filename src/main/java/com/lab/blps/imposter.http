@@ -20,9 +20,9 @@ Content-Type: application/json
 
 ###
 
-@dev = eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiREVWRUxPUEVSIiwiaWQiOjEsInN1YiI6ImRldjEiLCJpYXQiOjE3NDY4ODk3NTAsImV4cCI6MTc0Njg5MzM1MH0.isAhHu3oZ_QGMbG1whmafYtZvhjokWFUcPHzHShqqe8
-@mod = eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiTU9ERVJBVE9SIiwiaWQiOjIsInN1YiI6Im1vZDEiLCJpYXQiOjE3NDY4ODk4MjksImV4cCI6MTc0Njg5MzQyOX0._bQZQJAKy_Fu-2Pp1oU4q2U7aQUK9IjRboVCqTalgGU
-@fin = eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiRklOQU5DSUVSIiwiaWQiOjMsInN1YiI6ImZpbjEiLCJpYXQiOjE3NDU2NzIwOTQsImV4cCI6MTc0NTY3NTY5NH0.82CmxOpqg26LYmSJqpZo9ZZ_BVSeW49mavHhNfCkI0E
+@dev = eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiREVWRUxPUEVSIiwiaWQiOjEsInN1YiI6ImRldjEiLCJpYXQiOjE3NDgwNzg0NzQsImV4cCI6MTc0ODA4MjA3NH0.scQwwvtS28dPhQsnO0vs5WDLMW5w_Z-897tUNW-Gw-8
+@mod = eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiTU9ERVJBVE9SIiwiaWQiOjIsInN1YiI6Im1vZDEiLCJpYXQiOjE3NDgwNzg0NTksImV4cCI6MTc0ODA4MjA1OX0.nxk39hEK-agwcXhl45psfbmNMpArRNyh_-Iol9Eg9vI
+@fin = eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiRklOQU5DSUVSIiwiaWQiOjQsInN1YiI6ImZpbjEiLCJpYXQiOjE3NDgwNzQ3OTAsImV4cCI6MTc0ODA3ODM5MH0.mOYUHwaZNJFim34VlyL-_XFkm838KRCxRgidNy5NP7E
 
 
 ###
@@ -32,7 +32,7 @@ Authorization: Bearer {{dev}}
 Content-Type: application/json
 
 {
-  "name": "App",
+  "name": "APPAAAAAAYAUSTAL",
   "description": "This is a test app with maildev",
   "appFilePath": "amogus.ru/uploads/myapp.apk"
 }
@@ -67,7 +67,7 @@ Authorization: Bearer {{mod}}
 # 4️⃣ Разработчику предлагают монетизацию (он может отказаться или сразу подключить)
 # Если разработчик отказывается, пропустить следующий шаг
 
-POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/applications/1/monetization/request?accountNumber=1234567890
+POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/applications/4/monetization/request?accountNumber=1234567890
 Authorization: Bearer {{dev}}
 
 
@@ -79,32 +79,33 @@ Content-Type: application/json
 {
   "username": "fin1",
   "password": "fin1",
-  "role": "FINANCIER"
+  "role": "FINANCIER",
+  "email": "sosi@mail.ru"
 }
 
 ###
 
 # 5️⃣ Финансовый отдел проверяет реквизиты (может отклонить)
-POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/finance/paymentinfo/1/validate?paymentStatus=REJECTED
+POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/finance/paymentinfo/4/validate?paymentStatus=REJECTED
 Authorization: Bearer {{fin}}
 
 
 ###
 
 # 6️⃣ Разработчик исправляет реквизиты и снова отправляет
-POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/applications/1/monetization/request?accountNumber=2134567890
+POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/applications/4/monetization/request?accountNumber=2134567890
 Authorization: Bearer {{dev}}
 ###
 
 # 7️⃣ Финансовый отдел повторно проверяет реквизиты (утверждает)
-POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/finance/paymentinfo/2/validate?paymentStatus=APPROVED
+POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/finance/paymentinfo/1/validate?paymentStatus=APPROVED
 Authorization: Bearer {{fin}}
 
 
 ###
 
 # 8️⃣ Финансовый отдел создаёт договор
-POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/finance/contracts?applicationId=1&pdfPath=/path/to/contract.pdf
+POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/finance/contracts?applicationId=6&pdfPath=/path/to/contract.pdf
 Authorization: Bearer {{fin}}
 
 
@@ -115,6 +116,10 @@ Authorization: Bearer {{fin}}
 GET http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/developer/contracts/1
 Authorization: Bearer {{dev}}
 
+###
+
+#GET http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/send?message=Hello%20World
+#Authorization: Bearer {{fin}}
 
 ###
 # ыыы

@@ -1,13 +1,11 @@
 package com.lab.blps.services;
 
 import com.lab.blps.controllers.EmailController;
-import com.lab.blps.models.applications.Application;
-import com.lab.blps.models.applications.MonetizationStatus;
-import com.lab.blps.models.applications.PaymentInfo;
-import com.lab.blps.models.applications.PaymentStatus;
+import com.lab.blps.models.applications.*;
 import com.lab.blps.models.contracts.Contract;
 import com.lab.blps.models.contracts.ContractStatus;
 import com.lab.blps.repositories.applications.ApplicationRepository;
+import com.lab.blps.repositories.applications.UserRepository;
 import com.lab.blps.repositories.contracts.ContractRepository;
 import com.lab.blps.repositories.applications.PaymentInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +19,8 @@ public class MonetizationService {
     private final ApplicationRepository applicationRepository;
     private final PaymentInfoRepository paymentInfoRepository;
     private final ContractRepository contractRepository;
+
+    private final UserRepository userRepository;
     private final UserService userService;
 
     @Autowired
@@ -29,10 +29,13 @@ public class MonetizationService {
 
     public MonetizationService(ApplicationRepository applicationRepository,
                                PaymentInfoRepository paymentInfoRepository,
-                               ContractRepository contractRepository, UserService userService) {
+                               ContractRepository contractRepository,
+                               UserRepository userRepository,
+                               UserService userService) {
         this.applicationRepository = applicationRepository;
         this.paymentInfoRepository = paymentInfoRepository;
         this.contractRepository = contractRepository;
+        this.userRepository = userRepository;
         this.userService = userService;
     }
 
@@ -87,12 +90,15 @@ public class MonetizationService {
         Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new RuntimeException("Application not found"));
 
+        User user = userRepository.findById(application.getDeveloper().getId())
+                .orElseThrow(() -> new RuntimeException("Developer not found"));
+
         // Предполагаем, что реквизиты уже проверены (paymentStatus = APPROVED).
         Contract contract = new Contract();
         contract.setApplicationId(applicationId);
         contract.setPdfPath(pdfPath);
         contract.setStatus(ContractStatus.SENT_TO_DEVELOPER);
-        emailNotificationSender.sendMessage("Скачйте ваш контракт по ссылке" + pdfPath);
+        emailNotificationSender.sendMessage(user.getEmail() + "|Скачйте ваш контракт по ссылке" + pdfPath);
 
         contractRepository.save(contract);
 
