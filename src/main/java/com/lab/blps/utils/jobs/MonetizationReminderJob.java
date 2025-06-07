@@ -33,7 +33,7 @@ public class MonetizationReminderJob implements Job {
         for (Application app : apps) {
             User dev = app.getDeveloper();
             if (dev.getEmail() != null) {
-                emailSender.sendMessage("Вы ещё не подали заявку на монетизацию приложения: " + app.getName());
+                emailSender.sendMessage(dev.getEmail() + "|Вы ещё не подали заявку на монетизацию приложения: " + app.getName());
             }
         }
     }

@@ -56,6 +56,8 @@ dependencies {
     implementation("jakarta.resource:jakarta.resource-api:2.1.0")
     implementation("org.apache.httpcomponents.client5:httpclient5:5.4.4")
     implementation("org.springframework.boot:spring-boot-starter-quartz")
+    implementation("org.camunda.bpm:camunda-engine:7.21.0")
+    implementation("org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter:7.21.0")
 
 }
 

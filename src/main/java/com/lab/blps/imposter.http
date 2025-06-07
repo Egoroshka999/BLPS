@@ -14,15 +14,15 @@ POST localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/auth/sign-in
 Content-Type: application/json
 
 {
-  "username": "dev1",
-  "password": "dev1"
+  "username": "fin1",
+  "password": "fin1"
 }
 
 ###
 
-@dev = eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiREVWRUxPUEVSIiwiaWQiOjEsInN1YiI6ImRldjEiLCJpYXQiOjE3NDgwNzg0NzQsImV4cCI6MTc0ODA4MjA3NH0.scQwwvtS28dPhQsnO0vs5WDLMW5w_Z-897tUNW-Gw-8
-@mod = eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiTU9ERVJBVE9SIiwiaWQiOjIsInN1YiI6Im1vZDEiLCJpYXQiOjE3NDgwNzg0NTksImV4cCI6MTc0ODA4MjA1OX0.nxk39hEK-agwcXhl45psfbmNMpArRNyh_-Iol9Eg9vI
-@fin = eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiRklOQU5DSUVSIiwiaWQiOjQsInN1YiI6ImZpbjEiLCJpYXQiOjE3NDgwNzQ3OTAsImV4cCI6MTc0ODA3ODM5MH0.mOYUHwaZNJFim34VlyL-_XFkm838KRCxRgidNy5NP7E
+@dev = eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiREVWRUxPUEVSIiwiaWQiOjEsInN1YiI6ImRldjEiLCJpYXQiOjE3NDgwOTA2NTIsImV4cCI6MTc0ODA5NDI1Mn0.pldMDZ7imow-K17S8jFLFafEsHMXPFWj0HyU1I4mgo0
+@mod = eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiTU9ERVJBVE9SIiwiaWQiOjIsInN1YiI6Im1vZDEiLCJpYXQiOjE3NDgwOTA2NzUsImV4cCI6MTc0ODA5NDI3NX0.Le3g99Q-feLoWPaFbCP1JUWQNWNIFQlmwJCH8oTSrOk
+@fin = eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiRklOQU5DSUVSIiwiaWQiOjQsInN1YiI6ImZpbjEiLCJpYXQiOjE3NDgwOTA2OTAsImV4cCI6MTc0ODA5NDI5MH0.KG_qYKibJElRsN6_vEI0j8zBkCARk1wDMixUNPAtz98
 
 
 ###
@@ -32,8 +32,8 @@ Authorization: Bearer {{dev}}
 Content-Type: application/json
 
 {
-  "name": "APPAAAAAAYAUSTAL",
-  "description": "This is a test app with maildev",
+  "name": "YA_V_AFIGEEEEEEEEEE",
+  "description": "AMOGUS IMPOSTER MESSAGE",
   "appFilePath": "amogus.ru/uploads/myapp.apk"
 }
 
@@ -58,7 +58,7 @@ Content-Type: application/json
 
 ###
 # 3️⃣ Модератор проверяет приложение (одобряет)
-POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/moderator/applications/3/review?approved=true
+POST http://localhost:8080/blps-0.0.1-SNAPSHOT-plain/api/moderator/applications/8/review?approved=true
 Authorization: Bearer {{mod}}
 
 ###
