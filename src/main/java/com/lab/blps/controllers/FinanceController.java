@@ -18,7 +18,7 @@ public class FinanceController {
     }
 
     // Проверить корректность реквизитов
-    @PreAuthorize("hasRole('FINANCIER')")
+//    @PreAuthorize("hasRole('FINANCIER')")
     @PostMapping("/paymentinfo/{paymentInfoId}/validate")
     public PaymentInfo validatePaymentInfo(@PathVariable Long paymentInfoId,
                                            @RequestParam PaymentStatus paymentStatus) {
@@ -26,7 +26,7 @@ public class FinanceController {
     }
 
     // Создать договор (после проверки реквизитов)
-    @PreAuthorize("hasRole('FINANCIER')")
+//    @PreAuthorize("hasRole('FINANCIER')")
     @PostMapping("/contracts")
     public Contract createContract(@RequestParam Long applicationId,
                                    @RequestParam String pdfPath) throws Exception {

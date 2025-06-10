@@ -34,28 +34,28 @@ public class DeveloperController {
     }
 
     // Загрузить новое приложение
-    @PreAuthorize("hasRole('DEVELOPER')")
+//    @PreAuthorize("hasRole('DEVELOPER')")
     @PostMapping("/applications")
     public Application uploadApplication(@RequestBody ApplicationDto applicationDto) throws Exception {
         return applicationService.uploadApplication(applicationDto);
     }
 
     // Обновить приложение
-    @PreAuthorize("hasRole('DEVELOPER')")
+//    @PreAuthorize("hasRole('DEVELOPER')")
     @PutMapping("/applications/{appId}")
     public Application updateApplication(@PathVariable Long appId, @RequestBody ApplicationDto applicationDto) {
         return applicationService.updateApplication(appId, applicationDto);
     }
 
     // Удалить приложение
-    @PreAuthorize("hasRole('DEVELOPER')")
+//    @PreAuthorize("hasRole('DEVELOPER')")
     @DeleteMapping("/applications/{appId}")
     public Application deleteApplication(@PathVariable Long appId) {
         return applicationService.deleteApplication(appId);
     }
 
     // Подать заявку на монетизацию
-    @PreAuthorize("hasRole('DEVELOPER')")
+//    @PreAuthorize("hasRole('DEVELOPER')")
     @PostMapping("/applications/{appId}/monetization/request")
     public Application requestMonetization(@PathVariable Long appId,
                                            @RequestParam String accountNumber) {
@@ -63,20 +63,20 @@ public class DeveloperController {
     }
 
     // Остановить монетизацию
-    @PreAuthorize("hasRole('DEVELOPER')")
+//    @PreAuthorize("hasRole('DEVELOPER')")
     @PostMapping("/applications/{appId}/monetization/stop")
     public Application stopMonetization(@PathVariable Long appId) {
         return monetizationService.stopMonetization(appId);
     }
 
     //Получение контракта на изучение
-    @PreAuthorize("hasRole('DEVELOPER')")
+//    @PreAuthorize("hasRole('DEVELOPER')")
     @GetMapping("/contracts/{contractId}")
     public String getContract(@PathVariable Long contractId) {
         return monetizationService.getContractInfo(contractId);
     }
     // Ответ на договор
-    @PreAuthorize("hasRole('DEVELOPER')")
+//    @PreAuthorize("hasRole('DEVELOPER')")
     @PostMapping("/contracts/{contractId}/response")
     public String contractResponse(@PathVariable Long contractId,
                                    @RequestParam boolean accepted) {

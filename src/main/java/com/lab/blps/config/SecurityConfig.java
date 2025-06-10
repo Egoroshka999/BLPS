@@ -36,10 +36,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authorizeHttpRequests(request -> {
                             request
-                                    .requestMatchers("/api/auth/**").permitAll()
-                                    .requestMatchers("/api/developer/**").hasRole("DEVELOPER")
-                                    .requestMatchers("/api/moderator/**").hasRole("MODERATOR")
-                                    .requestMatchers("/api/financier/**").hasRole("FINANCIER")
+                                    .requestMatchers("/api/**", "camunda/**", "/camunda-welcome").permitAll()
                                     .anyRequest().authenticated();
                         }
                 )
